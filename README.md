@@ -30,8 +30,8 @@ ctest --test-dir build --output-on-failure
 
 | Change this | Leave this alone |
 |---|---|
-| The project name at the top of `CMakeLists.txt` (`# CHANGE THIS`) | `tests/doctest.h` |
-| The two file lists in `CMakeLists.txt` (`# EDIT THIS LIST:`, for the `app` and `test_build` targets) | `.gitignore` |
+| The two file lists in `CMakeLists.txt` (`# EDIT THIS LIST:`, for the `app` and `test_build` targets) | `tests/doctest.h` |
+| | `.gitignore` |
 | Files in `src/` (add your own model/view/controller classes; delete `counter.h`/`counter.cpp` once you have your own) | |
 | Files in `tests/` (add a `test_*.cpp` per class you want covered) | |
 | The dependency install step in `.github/workflows/ci.yml` (add `apt-get install` lines for any library you use) | |
