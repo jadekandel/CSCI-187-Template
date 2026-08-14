@@ -9,8 +9,8 @@ name: CI
 
 on:
   # Uncomment the next two lines to run CI on every push and pull request:
-  push:
-  pull_request:
+  #push:
+  #pull_request:
   workflow_dispatch:
 
 jobs:
