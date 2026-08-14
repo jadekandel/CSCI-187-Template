@@ -12,22 +12,23 @@ set(CMAKE_AUTORCC ON)
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
 
 # The GUI application.
+# Include ALL files you need to run your application,
+# including view and controller files.
 # main.cpp must stay here and must NOT appear in test_build below, or you
 # will get a "duplicate main" link error.
 add_executable(app
     # EDIT THIS LIST:
     src/main.cpp
-    src/counter.cpp
+    src/prime.cpp
 )
 target_link_libraries(app PRIVATE Qt5::Widgets)
 
-# The test binary. List each test .cpp file together with the model .cpp
-# files it exercises. Do NOT add src/main.cpp here, and generally don't add
-# view/controller files either — they pull in a display and duplicate main().
+# The test binary. Include model classes and test .cpp files (no h files)
+# In this class, we only test the model classes, not view and controller files. 
 add_executable(test_build
     # EDIT THIS LIST:
-    tests/test_counter.cpp
-    src/counter.cpp
+    tests/test_prime.cpp
+    src/prime.cpp
 )
 target_link_libraries(test_build PRIVATE Qt5::Widgets)
 target_include_directories(test_build PRIVATE src tests)

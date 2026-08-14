@@ -17,8 +17,8 @@ repo as their starting point.
 
 ## Building and running locally
 
-These are the exact same three commands CI runs on every push, so if they
-pass locally they'll pass in CI too:
+These are the exact same three commands CI runs (once it's turned on — see
+below), so if they pass locally they'll pass in CI too:
 
 ```
 cmake -B build
@@ -26,14 +26,23 @@ cmake --build build
 ctest --test-dir build --output-on-failure
 ```
 
+## Turning on CI
+
+CI starts out **off** in this template, so you can commit and push code
+before your team has covered CI in class without hitting failures you don't
+know how to read yet. When your team is ready, open
+`.github/workflows/ci.yml` and uncomment the `push:` and `pull_request:`
+lines under `on:`. From then on, every push and pull request triggers an
+automatic build + test run.
+
 ## What to change vs. what to leave alone
 
 | Change this | Leave this alone |
 |---|---|
 | The two file lists in `CMakeLists.txt` (`# EDIT THIS LIST:`, for the `app` and `test_build` targets) | `tests/doctest.h` |
-| | `.gitignore` |
-| Files in `src/` (add your own model/view/controller classes; delete `counter.h`/`counter.cpp` once you have your own) | |
-| Files in `tests/` (add a `test_*.cpp` per class you want covered) | |
+| The `on:` triggers in `.github/workflows/ci.yml` (uncomment `push:`/`pull_request:` to turn CI on) | `.gitignore` |
+| Files in `src/` (add your own model/view/controller classes; delete `prime.h`/`prime.cpp` once you have your own) | |
+| Files in `tests/` (add a `test_*.cpp` per model class — view/controller classes aren't tested in this course) | |
 | The dependency install step in `.github/workflows/ci.yml` (add `apt-get install` lines for any library you use) | |
 
 Only **one** test file in the whole project may have
@@ -48,12 +57,10 @@ testing, then declares one or more `TEST_CASE`s made of `CHECK` assertions:
 
 ```cpp
 #include "doctest.h"
-#include "counter.h"
+#include "prime.h"
 
-TEST_CASE("add increases the value") {
-    Counter counter(QString("Score"), 10);
-    counter.add(3);
-    CHECK(counter.value() == 3);
+TEST_CASE("isPrime returns true for a prime number") {
+    CHECK(isPrime(7) == true);
 }
 ```
 
@@ -92,5 +99,5 @@ your setup and will often suggest fixes that don't apply to this project.
 
 ## Where to see results
 
-Push your branch or open a pull request, then check the **Actions** tab on
-GitHub to see the build and test results.
+Once CI is turned on (see above), push your branch or open a pull request
+and check the **Actions** tab on GitHub to see the build and test results.
