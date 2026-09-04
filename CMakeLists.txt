@@ -9,7 +9,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
-find_package(Qt5 COMPONENTS Widgets REQUIRED)
+find_package(Qt6 COMPONENTS Widgets REQUIRED)
 
 # The GUI application.
 # Include ALL files you need to run your application,
@@ -21,16 +21,21 @@ add_executable(app
     src/main.cpp
     src/prime.cpp
 )
-target_link_libraries(app PRIVATE Qt5::Widgets)
+target_link_libraries(app PRIVATE Qt6::Widgets)
 
 # The test binary. Include model classes and test .cpp files (no h files)
-# In this class, we only test the model classes, not view and controller files. 
+# In this class, we only test the model classes, not view and controller files.
+# test_main.cpp provides main() for the test binary and must stay in this
+# list. Every other test file (e.g. test_prime.cpp) is an ordinary doctest
+# file with no special line at the top — copy test_prime.cpp as the
+# starting point for a new test file and just add it below.
 add_executable(test_build
     # EDIT THIS LIST:
+    tests/test_main.cpp
     tests/test_prime.cpp
     src/prime.cpp
 )
-target_link_libraries(test_build PRIVATE Qt5::Widgets)
+target_link_libraries(test_build PRIVATE Qt6::Widgets)
 target_include_directories(test_build PRIVATE src tests)
 
 enable_testing()
