@@ -3,14 +3,14 @@
 # on by uncommenting the "push:" and "pull_request:" lines when you're
 # ready. Once it's on, the only line you should normally need to edit is
 # the dependency install step below, when your project needs a library
-# beyond Qt (e.g. Boost, SQLite).
+# beyond Qt and SQLite (e.g. Boost).
 
 name: CI
 
 on:
   # Uncomment the next two lines to run CI on every push and pull request:
-  #push:
-  #pull_request:
+  push:
+  pull_request:
   workflow_dispatch:
 
 jobs:
@@ -22,10 +22,12 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y qt6-base-dev
+          # qt6-base-dev provides Qt Widgets and the Qt SQL module, but NOT
+          # the SQLite driver itself -- libqt6sql6-sqlite is what makes
+          # QSqlDatabase::addDatabase("QSQLITE") actually work.
+          sudo apt-get install -y qt6-base-dev libqt6sql6-sqlite
           # Add other libraries your project needs here, for example:
           # sudo apt-get install -y libboost-all-dev
-          # sudo apt-get install -y libsqlite3-dev
 
       - name: Configure
         run: cmake -B build

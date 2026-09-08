@@ -9,33 +9,31 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
-find_package(Qt6 COMPONENTS Widgets REQUIRED)
+# Qt6::Sql gives you QSqlDatabase/QSqlQuery, backed by SQLite.
+find_package(Qt6 COMPONENTS Widgets Sql REQUIRED)
+
+# Collect all source files in src/ and all test files in tests/.
+# You do NOT need to edit this file when you add a new .cpp file.
+# Just create the file in src/ or tests/ and it will be picked up.
+file(GLOB APP_SOURCES  CONFIGURE_DEPENDS src/*.cpp)
+file(GLOB TEST_SOURCES CONFIGURE_DEPENDS tests/*.cpp)
+
+# The test binary must not include main.cpp, or you get a
+# "duplicate main" link error (tests/test_main.cpp provides main()).
+set(APP_SOURCES_NO_MAIN ${APP_SOURCES})
+list(REMOVE_ITEM APP_SOURCES_NO_MAIN ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp)
 
 # The GUI application.
-# Include ALL files you need to run your application,
-# including view and controller files.
-# main.cpp must stay here and must NOT appear in test_build below, or you
-# will get a "duplicate main" link error.
-add_executable(app
-    # EDIT THIS LIST:
-    src/main.cpp
-    src/prime.cpp
-)
-target_link_libraries(app PRIVATE Qt6::Widgets)
+add_executable(app ${APP_SOURCES})
+target_link_libraries(app PRIVATE Qt6::Widgets Qt6::Sql)
+target_include_directories(app PRIVATE src)
 
-# The test binary. Include model classes and test .cpp files (no h files)
-# In this class, we only test the model classes, not view and controller files.
-# test_main.cpp provides main() for the test binary and must stay in this
-# list. Every other test file (e.g. test_prime.cpp) is an ordinary doctest
-# file with no special line at the top — copy test_prime.cpp as the
-# starting point for a new test file and just add it below.
-add_executable(test_build
-    # EDIT THIS LIST:
-    tests/test_main.cpp
-    tests/test_prime.cpp
-    src/prime.cpp
-)
-target_link_libraries(test_build PRIVATE Qt6::Widgets)
+# The test binary: every test file, plus your source files except main.cpp.
+# In this class we only write tests for model classes, not view or
+# controller files. Copy tests/test_prime.cpp as a starting point for a
+# new test file — no special #define needed at the top.
+add_executable(test_build ${TEST_SOURCES} ${APP_SOURCES_NO_MAIN})
+target_link_libraries(test_build PRIVATE Qt6::Widgets Qt6::Sql)
 target_include_directories(test_build PRIVATE src tests)
 
 enable_testing()
