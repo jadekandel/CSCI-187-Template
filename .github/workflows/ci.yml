@@ -1,16 +1,19 @@
-# CI is OFF by default (see "on:" below) so that adding code before your
-# team has covered CI in class doesn't produce confusing failures. Turn it
-# on by uncommenting the "push:" and "pull_request:" lines when you're
-# ready. Once it's on, the only line you should normally need to edit is
-# the dependency install step below, when your project needs a library
-# beyond Qt and SQLite (e.g. Boost).
+# CI runs automatically on every push and pull request. It builds the
+# project and runs the tests on a clean checkout of your repo, so a red X
+# on GitHub usually means something is broken for your teammates even if
+# it works on your machine — most often a file you forgot to commit.
+#
+# The only line you should normally need to edit is the dependency install
+# step below, when your project needs a library beyond Qt and SQLite
+# (e.g. Boost).
 
 name: CI
 
 on:
-  # Uncomment the next two lines to run CI on every push and pull request:
   push:
   pull_request:
+  # workflow_dispatch lets you also start a run by hand from the Actions
+  # tab on GitHub.
   workflow_dispatch:
 
 jobs:
